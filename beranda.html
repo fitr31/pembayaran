@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Keuangan - Beranda</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(180deg,#f7fafc,#f3f4f6); color:#111827; }
+    .container { max-width: 400px; margin: 0 auto; background: #fff; min-height: 100vh; position: relative; padding-bottom: 90px; }
+
+    .header { padding:12px 14px; color:#98a2b3; font-size:12px; }
+
+    .card { background:#ffffff; border-radius:16px; margin: 12px 12px 0; padding: 0; box-shadow: 0 10px 30px rgba(15,23,42,0.05); }
+
+    .hero { height: 240px; border-radius:16px 16px 0 0; overflow:hidden; display:flex; align-items:center; justify-content:center; background: radial-gradient(90% 70% at 50% 35%, #d9f1ec 0%, #cfe6e1 60%, #bfd9d5 100%); border-bottom:1px solid rgba(0,0,0,0.05); }
+    .hero-illustration { width:90%; height:80%; background: #e9f2ef; border-radius:12px; position:relative; box-shadow: inset 0 0 0 2px rgba(0,0,0,0.03); }
+
+    .content { padding: 18px 16px 24px; text-align:center; }
+    .title { font-size:22px; font-weight:800; line-height:1.2; margin-bottom:10px; color:#111827; }
+    .desc { font-size:14px; color:#667085; line-height:1.6; }
+
+    .cta-wrap { padding: 24px 16px 28px; }
+    .cta { width:100%; background: linear-gradient(135deg,#2563eb,#60a5fa); border:none; color:#fff; font-weight:800; font-size:16px; padding:14px 16px; border-radius:14px; cursor:pointer; box-shadow:0 12px 20px rgba(37,99,235,.25); }
+
+    /* Dashboard */
+    .saldo-card { margin: 12px; background: linear-gradient(135deg,#2563eb,#60a5fa); color:#fff; border-radius:16px; padding:16px; box-shadow: 0 12px 24px rgba(37,99,235,0.3); }
+    .saldo-title { font-size:12px; opacity:0.9; }
+    .saldo-amount { font-size:26px; font-weight:800; margin-top:6px; }
+    .saldo-sub { font-size:12px; opacity:0.9; margin-top:4px; }
+
+    .chips { display:flex; overflow:auto; gap:10px; padding: 0 12px 8px; }
+    .chip { flex:0 0 auto; display:flex; align-items:center; gap:8px; background:#f1f5f9; border-radius:999px; padding:10px 12px; font-weight:700; font-size:12px; box-shadow:0 1px 0 rgba(0,0,0,0.05); cursor:pointer; }
+    .chip .icon { font-size:16px; }
+
+    .section { padding: 8px 12px; }
+    .section h3 { font-size:14px; font-weight:800; margin:8px 0; color:#111827; }
+
+    .bill { display:flex; justify-content:space-between; align-items:center; background:#fff; border-radius:12px; padding:12px; box-shadow:0 1px 0 rgba(0,0,0,0.06); margin-bottom:8px; }
+    .bill .left { display:flex; flex-direction:column; }
+    .bill .title { font-weight:700; font-size:14px; }
+    .bill .sub { color:#667085; font-size:12px; }
+    .bill .amount { font-weight:800; }
+    .badge { font-size:11px; padding:4px 8px; border-radius:999px; }
+    .badge.unpaid { background:#fef3c7; color:#92400e; }
+    .badge.paid { background:#dcfce7; color:#166534; }
+
+    .txn { display:flex; justify-content:space-between; align-items:center; background:#fff; border-radius:12px; padding:12px; box-shadow:0 1px 0 rgba(0,0,0,0.06); margin-bottom:8px; }
+    .txn .left { display:flex; flex-direction:column; }
+    .txn .title { font-weight:700; font-size:14px; }
+    .txn .sub { color:#667085; font-size:12px; }
+    .txn .amount.in { color:#16a34a; font-weight:800; }
+    .txn .amount.out { color:#dc2626; font-weight:800; }
+
+    .nav-bar { position: fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:400px; background:#fff; border-top:1px solid #e5e7eb; display:flex; justify-content:space-around; padding:10px 0; }
+    .nav-item { display:flex; flex-direction:column; align-items:center; color:#98a2b3; }
+    .nav-item.active { color:#3b82f6; }
+    .nav-icon { font-size:20px; margin-bottom:5px; }
+    .nav-label { font-size:12px; font-weight:600; }
+    .hidden{ display:none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">Stitch Design</div>
+
+    <div id="onboarding" class="card">
+      <div class="hero"><div class="hero-illustration"></div></div>
+      <div class="content">
+        <div class="title">Manage Your Boarding School Bills</div>
+        <div class="desc">Easily track and pay your boarding school fees with our app. Stay updated on payment schedules and manage your account effortlessly.</div>
+      </div>
+      <div class="cta-wrap"><button id="ctaBtn" class="cta">Get Started</button></div>
+    </div>
+
+    <div id="dashboard" class="hidden">
+      <div class="saldo-card">
+        <div class="saldo-title">Saldo Dompet</div>
+        <div id="saldoAmount" class="saldo-amount">Rp 500.000.000,00</div>
+        <div class="saldo-sub" id="saldoName">-</div>
+      </div>
+
+      <div class="chips">
+        <div class="chip" onclick="go('metode')"><span class="icon">💳</span>Metode</div>
+        <div class="chip" onclick="topUp()"><span class="icon">➕</span>Top Up</div>
+        <div class="chip" onclick="cash()"><span class="icon">💵</span>Cash</div>
+        <div class="chip" onclick="go('tagihan')"><span class="icon">📄</span>Tagihan</div>
+        <div class="chip" onclick="go('transaksi')"><span class="icon">🧾</span>Transaksi</div>
+      </div>
+
+      <div class="section">
+        <h3>Metode Pembayaran Populer</h3>
+        <div class="chips">
+          <div class="chip" onclick="pay('OVO')"><span class="icon">🟣</span>OVO</div>
+          <div class="chip" onclick="pay('GoPay')"><span class="icon">🔵</span>GoPay</div>
+          <div class="chip" onclick="pay('DANA')"><span class="icon">🔷</span>DANA</div>
+          <div class="chip" onclick="pay('VA BCA')"><span class="icon">🏦</span>VA BCA</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>Tagihan Santri</h3>
+        <div id="billList"></div>
+      </div>
+
+      <div class="section">
+        <h3>Transaksi Terakhir</h3>
+        <div id="txnList"></div>
+      </div>
+    </div>
+
+    <div class="nav-bar">
+      <div class="nav-item active" onclick="navigate('beranda')">
+        <div class="nav-icon">🏠</div>
+        <div class="nav-label">Beranda</div>
+      </div>
+      <div class="nav-item" onclick="navigate('riwayat')">
+        <div class="nav-icon">🕒</div>
+        <div class="nav-label">Riwayat</div>
+      </div>
+      <div class="nav-item" onclick="navigate('profil')">
+        <div class="nav-icon">👤</div>
+        <div class="nav-label">Profil</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const savedUser = localStorage.getItem('currentUser');
+    const isLoggedIn = !!savedUser;
+    const onboarding = document.getElementById('onboarding');
+    const dashboard = document.getElementById('dashboard');
+
+    function hide(el){ el.classList.add('hidden'); }
+    function show(el){ el.classList.remove('hidden'); }
+
+    if (isLoggedIn) {
+      hide(onboarding); show(dashboard);
+      const user = JSON.parse(savedUser);
+      const saldo = Number(JSON.parse(localStorage.getItem('saldo') || '0'));
+      document.getElementById('saldoAmount').textContent = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(saldo);
+      document.getElementById('saldoName').textContent = `${user.name} • Kelas ${user.kelas} • NISN ${user.nisn}`;
+
+      const bills = JSON.parse(localStorage.getItem('bills') || '[]');
+      const billList = document.getElementById('billList'); billList.innerHTML = '';
+      bills.forEach(b => {
+        const item = document.createElement('div'); item.className = 'bill';
+        item.innerHTML = `
+          <div class="left">
+            <div class="title">${b.title}</div>
+            <div class="sub">Jatuh tempo: ${b.due}</div>
+          </div>
+          <div style="text-align:right">
+            <div class="amount">${new Intl.NumberFormat('id-ID', { style:'currency', currency:'IDR', maximumFractionDigits:0 }).format(b.amount)}</div>
+            <div class="badge ${b.status}">${b.status === 'paid' ? 'Lunas' : 'Belum Bayar'}</div>
+          </div>`;
+        billList.appendChild(item);
+      });
+
+      const txns = JSON.parse(localStorage.getItem('transactions') || '[]');
+      const txnList = document.getElementById('txnList'); txnList.innerHTML='';
+      txns.forEach(t => {
+        const el = document.createElement('div'); el.className='txn';
+        el.innerHTML = `
+          <div class="left">
+            <div class="title">${t.title}</div>
+            <div class="sub">${t.date}</div>
+          </div>
+          <div class="amount ${t.type}">${t.type==='in' ? '+' : '-'}${new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(t.amount)}</div>`;
+        txnList.appendChild(el);
+      });
+    } else { show(onboarding); hide(dashboard); }
+
+    document.getElementById('ctaBtn').addEventListener('click', () => { window.location.href = 'index.html'; });
+
+    function navigate(page) { switch(page) { case 'beranda': window.location.href='beranda.html'; break; case 'profil': window.location.href='profil.html'; break; case 'riwayat': alert('Halaman riwayat belum tersedia.'); break; } }
+    function go(target){ if(target==='metode'){ window.location.href='metode-pembayaran.html'; } else if(target==='tagihan'){ window.scrollTo({ top: document.getElementById('billList').offsetTop - 40, behavior:'smooth' }); } else if(target==='transaksi'){ window.scrollTo({ top: document.getElementById('txnList').offsetTop - 40, behavior:'smooth' }); } }
+    function topUp(){ alert('Top up coming soon'); }
+    function cash(){ alert('Pembayaran cash: silakan bayar ke petugas.'); }
+    function pay(name){ alert('Metode dipilih: ' + name); }
+  </script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Keuangan - Riwayat Pembayaran</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f5f5f5; color:#111827; }
+    .container { max-width: 400px; margin: 0 auto; background: #fff; min-height: 100vh; position: relative; padding-bottom: 90px; }
+
+    .header { background:#4CAF50; color:#fff; padding:15px 16px; display:flex; align-items:center; }
+    .title { flex:1; text-align:center; font-size:16px; font-weight:700; }
+
+    .section { padding: 16px; }
+    .pay { display:flex; justify-content:space-between; align-items:center; background:#fff; border-radius:12px; padding:12px; box-shadow:0 1px 0 rgba(0,0,0,0.06); margin-bottom:10px; }
+    .pay .left { display:flex; flex-direction:column; }
+    .pay .title { font-weight:700; font-size:14px; }
+    .pay .sub { color:#667085; font-size:12px; }
+    .pay .amount { font-weight:800; }
+
+    .nav-bar { position: fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:400px; background:#fff; border-top:1px solid #e5e7eb; display:flex; justify-content:space-around; padding:10px 0; }
+    .nav-item { display:flex; flex-direction:column; align-items:center; color:#98a2b3; }
+    .nav-item.active { color:#4CAF50; }
+    .nav-icon { font-size:20px; margin-bottom:5px; }
+    .nav-label { font-size:12px; font-weight:600; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header"><div style="width:24px"></div><div class="title">Riwayat Pembayaran</div><div style="width:24px"></div></div>
+
+    <div class="section" id="history"></div>
+
+    <div class="nav-bar">
+      <div class="nav-item" onclick="navigate('beranda')"><div class="nav-icon">🏠</div><div class="nav-label">Beranda</div></div>
+      <div class="nav-item" onclick="navigate('tagihan')"><div class="nav-icon">📄</div><div class="nav-label">Tagihan</div></div>
+      <div class="nav-item" onclick="navigate('metode')"><div class="nav-icon">💳</div><div class="nav-label">Metode</div></div>
+      <div class="nav-item active" onclick="navigate('riwayat')"><div class="nav-icon">🧾</div><div class="nav-label">Riwayat</div></div>
+      <div class="nav-item" onclick="navigate('profil')"><div class="nav-icon">👤</div><div class="nav-label">Profil</div></div>
+    </div>
+  </div>
+
+  <script>
+    const savedUser = localStorage.getItem('currentUser');
+    if (!savedUser) { window.location.href = 'index.html'; }
+
+    const pays = JSON.parse(localStorage.getItem('payments') || '[]');
+    const box = document.getElementById('history');
+    box.innerHTML = '';
+    pays.forEach(p => {
+      const row = document.createElement('div'); row.className='pay';
+      row.innerHTML = `
+        <div class="left">
+          <div class="title">${p.bill}</div>
+          <div class="sub">${p.method} • ${p.date}</div>
+        </div>
+        <div class="amount">${new Intl.NumberFormat('id-ID', { style:'currency', currency:'IDR', maximumFractionDigits:0 }).format(p.amount)}</div>`;
+      box.appendChild(row);
+    });
+
+    function navigate(page) {
+      switch(page) {
+        case 'beranda': window.location.href='beranda.html'; break;
+        case 'metode': window.location.href='metode-pembayaran.html'; break;
+        case 'tagihan': window.location.href='tagihan.html'; break;
+        case 'profil': window.location.href='profil.html'; break;
+        case 'riwayat': window.location.href='riwayat.html'; break;
+      }
+    }
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Keuangan - Metode Pembayaran</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f5f5f5; color:#333; }
+    .container { max-width: 400px; margin: 0 auto; background: #fff; min-height: 100vh; position: relative; padding-bottom: 90px; }
+
+    .header { background:#4CAF50; color:#fff; padding:15px 16px; display:flex; align-items:center; }
+    .back-btn { background:none; border:none; color:#fff; font-size:20px; cursor:pointer; padding:5px; }
+    .title { flex:1; text-align:center; font-size:16px; font-weight:600; }
+
+    .section { padding: 18px 16px 8px; }
+    .section h3 { font-size:14px; font-weight:700; color:#222; margin-bottom:10px; }
+
+    .list { display:flex; flex-direction:column; gap:10px; }
+    .item { display:flex; align-items:center; background:#fff; border-radius:12px; padding:12px; box-shadow: 0 1px 0 rgba(0,0,0,0.06); cursor:pointer; }
+    .logo { width:56px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700; margin-right:12px; font-size:14px; }
+    .logo.bca { background:#0b3c49; }
+    .logo.bni { background:#1f2a34; }
+    .logo.mandiri { background:#1f6a4d; }
+    .logo.ovo { background:#4c38a9; }
+    .logo.gopay { background:#0bb8cc; }
+    .logo.dana { background:#1877f2; }
+    .logo.cash { background: linear-gradient(135deg,#16a34a,#4ade80); color:#063; }
+
+    .texts { display:flex; flex-direction:column; flex:1; }
+    .texts .main { font-size:14px; font-weight:600; color:#222; }
+    .texts .sub { font-size:12px; color:#667085; }
+
+    .select-btn { background:#4CAF50; color:#fff; border:none; border-radius:8px; padding:8px 12px; font-size:12px; font-weight:600; cursor:pointer; }
+
+    /* Payment Modal */
+    .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; }
+    .modal.show { display:flex; align-items:center; justify-content:center; }
+    .modal-content { background:#fff; border-radius:16px; width:90%; max-width:350px; max-height:80vh; overflow-y:auto; }
+    .modal-header { background:#4CAF50; color:#fff; padding:16px; border-radius:16px 16px 0 0; text-align:center; }
+    .modal-title { font-size:16px; font-weight:700; }
+    .modal-body { padding:20px; }
+    .form-group { margin-bottom:16px; }
+    .form-label { display:block; font-size:13px; color:#344054; margin-bottom:6px; font-weight:600; }
+    .form-select { width:100%; padding:10px 12px; border:1.5px solid #e5e7eb; border-radius:8px; font-size:14px; background:#f8fafc; }
+    .form-input { width:100%; padding:10px 12px; border:1.5px solid #e5e7eb; border-radius:8px; font-size:14px; background:#f8fafc; }
+    .modal-actions { display:flex; gap:10px; padding:0 20px 20px; }
+    .btn { flex:1; padding:12px; border:none; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; }
+    .btn-secondary { background:#f1f5f9; color:#111827; }
+    .btn-primary { background:#4CAF50; color:#fff; }
+
+    .nav-bar { position: fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:400px; background:#fff; border-top:1px solid #e0e0e0; display:flex; justify-content:space-around; padding:10px 0; }
+    .nav-item { display:flex; flex-direction:column; align-items:center; color:#999; }
+    .nav-item.active { color:#4CAF50; }
+    .nav-icon { font-size:20px; margin-bottom:5px; }
+    .nav-label { font-size:12px; font-weight:500; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <button class="back-btn" onclick="navigate('beranda')">←</button>
+      <div class="title">Pilih Metode Pembayaran</div>
+    </div>
+
+    <div class="section">
+      <h3>Transfer Bank</h3>
+      <div class="list">
+        <div class="item">
+          <div class="logo bca">BCA</div>
+          <div class="texts">
+            <div class="main">Transfer BCA</div>
+            <div class="sub">Bank Central Asia</div>
+          </div>
+          <button class="select-btn" onclick="selectMethod('Transfer BCA')">Pilih</button>
+        </div>
+        <div class="item">
+          <div class="logo bni">BNI</div>
+          <div class="texts">
+            <div class="main">Transfer BNI</div>
+            <div class="sub">Bank Negara Indonesia</div>
+          </div>
+          <button class="select-btn" onclick="selectMethod('Transfer BNI')">Pilih</button>
+        </div>
+        <div class="item">
+          <div class="logo mandiri">MANDIRI</div>
+          <div class="texts">
+            <div class="main">Transfer Mandiri</div>
+            <div class="sub">Bank Mandiri</div>
+          </div>
+          <button class="select-btn" onclick="selectMethod('Transfer Mandiri')">Pilih</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Virtual Account</h3>
+      <div class="list">
+        <div class="item">
+          <div class="logo bca">BCA</div>
+          <div class="texts">
+            <div class="main">Virtual Account BCA</div>
+            <div class="sub">Bank Central Asia</div>
+          </div>
+          <button class="select-btn" onclick="selectMethod('Virtual Account BCA')">Pilih</button>
+        </div>
+        <div class="item">
+          <div class="logo bni">BNI</div>
+          <div class="texts">
+            <div class="main">Virtual Account BNI</div>
+            <div class="sub">Bank Negara Indonesia</div>
+          </div>
+          <button class="select-btn" onclick="selectMethod('Virtual Account BNI')">Pilih</button>
+        </div>
+        <div class="item">
+          <div class="logo mandiri">MANDIRI</div>
+          <div class="texts">
+            <div class="main">Virtual Account Mandiri</div>
+            <div class="sub">Bank Mandiri</div>
+          </div>
+          <button class="select-btn" onclick="selectMethod('Virtual Account Mandiri')">Pilih</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>E-Wallet</h3>
+      <div class="list">
+        <div class="item">
+          <div class="logo ovo">OVO</div>
+          <div class="texts">
+            <div class="main">OVO</div>
+            <div class="sub">Dompet digital</div>
+          </div>
+          <button class="select-btn" onclick="selectMethod('OVO')">Pilih</button>
+        </div>
+        <div class="item">
+          <div class="logo gopay">GoPay</div>
+          <div class="texts">
+            <div class="main">GoPay</div>
+            <div class="sub">Dompet digital</div>
+          </div>
+          <button class="select-btn" onclick="selectMethod('GoPay')">Pilih</button>
+        </div>
+        <div class="item">
+          <div class="logo dana">DANA</div>
+          <div class="texts">
+            <div class="main">DANA</div>
+            <div class="sub">Dompet digital</div>
+          </div>
+          <button class="select-btn" onclick="selectMethod('DANA')">Pilih</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Pembayaran Tunai</h3>
+      <div class="item">
+        <div class="logo cash">CASH</div>
+        <div class="texts">
+          <div class="main">Bayar Tunai ke Petugas</div>
+          <div class="sub">Bayar langsung di bagian administrasi</div>
+        </div>
+        <button class="select-btn" onclick="selectMethod('Bayar Tunai ke Petugas')">Pilih</button>
+      </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title">Pembayaran</div>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Metode Pembayaran</label>
+            <input type="text" id="paymentMethod" class="form-input" readonly>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Pilih Tagihan</label>
+            <select id="billSelect" class="form-select">
+              <option value="">Pilih tagihan...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Jumlah Pembayaran</label>
+            <input type="text" id="paymentAmount" class="form-input" readonly>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Catatan (Opsional)</label>
+            <input type="text" id="paymentNote" class="form-input" placeholder="Tambahkan catatan...">
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-secondary" onclick="closeModal()">Batal</button>
+          <button class="btn btn-primary" onclick="processPayment()">Bayar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-bar">
+      <div class="nav-item" onclick="navigate('beranda')"><div class="nav-icon">🏠</div><div class="nav-label">Beranda</div></div>
+      <div class="nav-item" onclick="navigate('tagihan')"><div class="nav-icon">📄</div><div class="nav-label">Tagihan</div></div>
+      <div class="nav-item active" onclick="navigate('metode')"><div class="nav-icon">💳</div><div class="nav-label">Metode</div></div>
+      <div class="nav-item" onclick="navigate('riwayat')"><div class="nav-icon">🧾</div><div class="nav-label">Riwayat</div></div>
+      <div class="nav-item" onclick="navigate('profil')"><div class="nav-icon">👤</div><div class="nav-label">Profil</div></div>
+    </div>
+  </div>
+
+  <script>
+    const savedUser = localStorage.getItem('currentUser');
+    if (!savedUser) { window.location.href = 'index.html'; }
+
+    let selectedMethod = '';
+    let selectedBill = null;
+
+    function selectMethod(method) {
+      selectedMethod = method;
+      document.getElementById('paymentMethod').value = method;
+      
+      // Load unpaid bills
+      const bills = JSON.parse(localStorage.getItem('bills') || '[]');
+      const unpaidBills = bills.filter(b => b.status === 'unpaid');
+      
+      const billSelect = document.getElementById('billSelect');
+      billSelect.innerHTML = '<option value="">Pilih tagihan...</option>';
+      
+      unpaidBills.forEach(bill => {
+        const option = document.createElement('option');
+        option.value = bill.id;
+        option.textContent = `${bill.title} - ${new Intl.NumberFormat('id-ID', { style:'currency', currency:'IDR', maximumFractionDigits:0 }).format(bill.amount)}`;
+        billSelect.appendChild(option);
+      });
+      
+      if (unpaidBills.length === 0) {
+        alert('Tidak ada tagihan yang belum dibayar.');
+        return;
+      }
+      
+      document.getElementById('paymentModal').classList.add('show');
+    }
+
+    function closeModal() {
+      document.getElementById('paymentModal').classList.remove('show');
+      selectedMethod = '';
+      selectedBill = null;
+    }
+
+    document.getElementById('billSelect').addEventListener('change', function() {
+      const billId = this.value;
+      if (billId) {
+        const bills = JSON.parse(localStorage.getItem('bills') || '[]');
+        selectedBill = bills.find(b => b.id === billId);
+        if (selectedBill) {
+          document.getElementById('paymentAmount').value = new Intl.NumberFormat('id-ID', { style:'currency', currency:'IDR', maximumFractionDigits:0 }).format(selectedBill.amount);
+        }
+      } else {
+        selectedBill = null;
+        document.getElementById('paymentAmount').value = '';
+      }
+    });
+
+    function processPayment() {
+      if (!selectedBill) {
+        alert('Silakan pilih tagihan terlebih dahulu.');
+        return;
+      }
+
+      const note = document.getElementById('paymentNote').value.trim();
+      
+      // Create payment record
+      const payment = {
+        id: 'PAY-' + Date.now(),
+        bill: selectedBill.title,
+        method: selectedMethod,
+        date: new Date().toLocaleDateString('id-ID'),
+        amount: selectedBill.amount,
+        note: note || '-'
+      };
+
+      // Add to payments history
+      const payments = JSON.parse(localStorage.getItem('payments') || '[]');
+      payments.unshift(payment);
+      localStorage.setItem('payments', JSON.stringify(payments));
+
+      // Update bill status to paid
+      const bills = JSON.parse(localStorage.getItem('bills') || '[]');
+      const billIndex = bills.findIndex(b => b.id === selectedBill.id);
+      if (billIndex !== -1) {
+        bills[billIndex].status = 'paid';
+        localStorage.setItem('bills', JSON.stringify(bills));
+      }
+
+      // Update saldo (deduct payment amount)
+      const currentSaldo = Number(JSON.parse(localStorage.getItem('saldo') || '0'));
+      const newSaldo = currentSaldo - selectedBill.amount;
+      localStorage.setItem('saldo', JSON.stringify(newSaldo));
+
+      // Add transaction record
+      const transactions = JSON.parse(localStorage.getItem('transactions') || '[]');
+      transactions.unshift({
+        id: 'TRX-' + Date.now(),
+        title: `Pembayaran ${selectedBill.title}`,
+        amount: selectedBill.amount,
+        date: new Date().toLocaleDateString('id-ID'),
+        type: 'out'
+      });
+      localStorage.setItem('transactions', JSON.stringify(transactions));
+
+      alert(`Pembayaran berhasil!\n\nTagihan: ${selectedBill.title}\nMetode: ${selectedMethod}\nJumlah: ${new Intl.NumberFormat('id-ID', { style:'currency', currency:'IDR', maximumFractionDigits:0 }).format(selectedBill.amount)}`);
+      
+      closeModal();
+      
+      // Redirect to riwayat page to show the new payment
+      setTimeout(() => {
+        window.location.href = 'riwayat.html';
+      }, 1000);
+    }
+
+    function navigate(page) { 
+      switch(page) { 
+        case 'beranda': window.location.href = 'beranda.html'; break; 
+        case 'profil': window.location.href = 'profil.html'; break; 
+        case 'riwayat': window.location.href = 'riwayat.html'; break; 
+        case 'metode': window.location.href = 'metode-pembayaran.html'; break; 
+        case 'tagihan': window.location.href = 'tagihan.html'; break; 
+      } 
+    }
+  </script>
+</body>
+</html>

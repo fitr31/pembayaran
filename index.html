@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Keuangan - Login</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(180deg,#f7fafc,#f3f4f6); color:#111827; }
+    .container { max-width: 400px; margin: 0 auto; background: #fff; min-height: 100vh; position: relative; padding-bottom: 90px; }
+
+    .brand { padding:10px 14px; color:#98a2b3; font-size:12px; }
+    .card { background:#ffffff; border-radius:16px; margin: 12px; box-shadow: 0 10px 30px rgba(15,23,42,0.05); }
+
+    .hero { height: 210px; border-radius:16px 16px 0 0; overflow:hidden; display:flex; align-items:center; justify-content:center; background: radial-gradient(90% 70% at 50% 35%, #d9f1ec 0%, #cfe6e1 60%, #bfd9d5 100%); border-bottom:1px solid rgba(0,0,0,0.05); }
+    .hero-illustration { width:86%; height:76%; background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23e9f2ef" rx="8"/><rect x="20" y="30" width="60" height="40" fill="%23d1e7dd" rx="4"/><rect x="25" y="35" width="50" height="30" fill="%23b8e1da" rx="2"/><rect x="30" y="40" width="40" height="20" fill="%23a8d8c8" rx="2"/><rect x="35" y="45" width="30" height="10" fill="%2398c9aa" rx="1"/><circle cx="50" cy="20" r="8" fill="%23d1e7dd"/><rect x="45" y="15" width="10" height="10" fill="%23b8e1da" rx="2"/></svg>') center/contain no-repeat; border-radius:14px; position:relative; box-shadow: inset 0 0 0 2px rgba(0,0,0,0.03); }
+
+    .content { padding: 18px 16px 20px; }
+    .welcome { font-size:22px; font-weight:800; text-align:center; margin-bottom:14px; letter-spacing:.2px; }
+
+    label { display:block; font-size:13px; color:#344054; margin:10px 0 6px; }
+    input { width:100%; padding:12px 14px; border:1.5px solid #e5e7eb; border-radius:12px; font-size:14px; background:#f8fafc; transition: box-shadow .2s, border-color .2s; }
+    input:focus { outline:none; border-color:#60a5fa; box-shadow:0 0 0 4px rgba(59,130,246,.1); }
+
+    .row { display:flex; gap:10px; }
+    .row .col { flex:1; }
+
+    .primary { width:100%; margin-top:16px; background: linear-gradient(135deg,#2563eb,#60a5fa); color:#fff; font-weight:800; letter-spacing:.3px; font-size:16px; border:none; border-radius:14px; padding:13px 16px; cursor:pointer; box-shadow: 0 12px 20px rgba(37,99,235,.25); transition: transform .1s ease, filter .2s; }
+    .primary:hover { filter: brightness(1.03); }
+    .primary:active { transform: translateY(1px); }
+
+    .btn { width:100%; margin-top:10px; background:#f1f5f9; color:#111827; font-weight:700; font-size:14px; border:none; border-radius:12px; padding:12px 14px; cursor:pointer; transition: background .2s; box-shadow: 0 1px 0 rgba(0,0,0,0.04); }
+    .btn:hover { background:#e5e7eb; }
+    .btn.fb { background:#eef2ff; }
+
+    .signup { text-align:center; color:#667085; font-size:13px; margin:18px 0 10px; }
+    .signup a { color:#1d4ed8; text-decoration:none; font-weight:700; }
+
+    .nav-bar { position: fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:400px; background:#fff; border-top:1px solid #e5e7eb; display:flex; justify-content:space-around; padding:10px 0; }
+    .nav-item { display:flex; flex-direction:column; align-items:center; color:#98a2b3; }
+    .nav-icon { font-size:20px; margin-bottom:5px; }
+    .nav-label { font-size:12px; font-weight:600; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="brand">Stitch Design</div>
+
+    <div class="card">
+      <div class="hero"><div class="hero-illustration"></div></div>
+      <div class="content">
+        <div class="welcome">Selamat Datang</div>
+        <form id="loginForm">
+          <label for="name">Nama Lengkap</label>
+          <input id="name" type="text" placeholder="Nama Lengkap" required />
+
+          <label for="email">Email</label>
+          <input id="email" type="email" placeholder="Email" required />
+
+          <label for="phone">Nomor HP</label>
+          <input id="phone" type="tel" placeholder="Nomor HP" required />
+
+          <label for="pin">PIN</label>
+          <input id="pin" type="password" inputmode="numeric" placeholder="PIN" minlength="4" maxlength="6" required />
+
+          <div class="row">
+            <div class="col">
+              <label for="nisn">NISN</label>
+              <input id="nisn" type="text" placeholder="NISN" required />
+            </div>
+            <div class="col">
+              <label for="kelas">Kelas</label>
+              <input id="kelas" type="text" placeholder="Contoh: 12 IPA 1" required />
+            </div>
+          </div>
+
+          <button type="submit" class="primary">Login</button>
+          <button type="button" class="btn" onclick="loginWith('gmail')">Login pakai Gmail</button>
+          <button type="button" class="btn fb" onclick="loginWith('facebook')">Login pakai Facebook</button>
+        </form>
+
+        <div class="signup">Don't have an account? <a href="signup.html">Sign Up</a></div>
+      </div>
+    </div>
+
+    <div class="nav-bar">
+      <div class="nav-item" onclick="navigate('beranda')"><div class="nav-icon">🏠</div><div class="nav-label">Beranda</div></div>
+      <div class="nav-item" onclick="navigate('tagihan')"><div class="nav-icon">📄</div><div class="nav-label">Tagihan</div></div>
+      <div class="nav-item" onclick="navigate('metode')"><div class="nav-icon">💳</div><div class="nav-label">Metode</div></div>
+      <div class="nav-item" onclick="navigate('riwayat')"><div class="nav-icon">🧾</div><div class="nav-label">Riwayat</div></div>
+      <div class="nav-item" onclick="navigate('profil')"><div class="nav-icon">👤</div><div class="nav-label">Profil</div></div>
+    </div>
+  </div>
+
+  <script>
+    const existing = localStorage.getItem('currentUser');
+    if (existing) { window.location.replace('beranda.html'); }
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const pin = document.getElementById('pin').value.trim();
+      const nisn = document.getElementById('nisn').value.trim();
+      const kelas = document.getElementById('kelas').value.trim();
+
+      const user = { name, email, phone, pin, nisn, kelas };
+      localStorage.setItem('currentUser', JSON.stringify(user));
+
+      if (!localStorage.getItem('saldo')) { localStorage.setItem('saldo', JSON.stringify(500000000)); }
+      if (!localStorage.getItem('bills')) {
+        const bills = [
+          { id: 'SPP-09', title: 'SPP September', due: '10-09-2025', amount: 250000, status: 'unpaid' },
+          { id: 'Kegiatan-1', title: 'Iuran Kegiatan', due: '20-09-2025', amount: 150000, status: 'unpaid' },
+          { id: 'Seragam', title: 'Seragam Santri', due: '30-09-2025', amount: 300000, status: 'paid' }
+        ];
+        localStorage.setItem('bills', JSON.stringify(bills));
+      }
+      if (!localStorage.getItem('transactions')) {
+        localStorage.setItem('transactions', JSON.stringify([
+          { id:'TRX-1001', title:'Top Up', amount:300000, date:'01-09-2025', type:'in' },
+          { id:'TRX-1002', title:'Pembelian Buku', amount:120000, date:'05-09-2025', type:'out' }
+        ]));
+      }
+      if (!localStorage.getItem('payments')) {
+        localStorage.setItem('payments', JSON.stringify([
+          { id:'PAY-0001', bill:'Seragam Santri', method:'Cash', date:'02-09-2025', amount:300000 }
+        ]));
+      }
+
+      window.location.href = 'beranda.html';
+    });
+
+    function loginWith(provider) { alert('Login dengan ' + provider + ' belum diimplementasikan'); }
+    function navigate(page) {
+      switch(page) {
+        case 'beranda': window.location.href = 'beranda.html'; break;
+        case 'profil': window.location.href = 'profil.html'; break;
+        case 'riwayat': window.location.href = 'riwayat.html'; break;
+        case 'metode': window.location.href = 'metode-pembayaran.html'; break;
+        case 'tagihan': window.location.href = 'tagihan.html'; break;
+      }
+    }
+  </script>
+</body>
+</html>

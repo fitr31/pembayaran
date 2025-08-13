@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Keuangan - Sign Up</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background:#f5f5f5; color:#111827; }
+    .container { max-width: 400px; margin: 0 auto; background: #fff; min-height: 100vh; position: relative; padding-bottom: 24px; }
+
+    .brand { padding:10px 14px; color:#98a2b3; font-size:12px; }
+    .card { background:#ffffff; border-radius:12px; margin: 8px; box-shadow: 0 1px 2px rgba(16,24,40,0.06); overflow:hidden; }
+    .hero { height: 120px; background: linear-gradient(135deg,#b8e1da,#d6efe9 40%, #cfe2e0); display:flex; align-items:center; justify-content:center; }
+
+    .building-illustration {
+      width: 80%;
+      height: 70%;
+      background: #e9f2ef;
+      border-radius: 8px;
+      position: relative;
+      box-shadow: inset 0 0 0 2px rgba(0,0,0,0.03);
+    }
+
+    .content { padding: 16px; }
+    h1 { font-size:20px; font-weight:800; text-align:center; margin-bottom:14px; }
+
+    label { display:block; font-size:13px; color:#344054; margin:10px 0 6px; }
+    input { width:100%; padding:12px 14px; border:2px solid #e0e0e0; border-radius:8px; font-size:16px; transition: border-color 0.3s; }
+    input:focus { outline: none; border-color: #46418a; }
+
+    .primary { width:100%; margin-top:16px; background: #46418a; color: white; border: none; border-radius:8px; font-size:16px; font-weight:600; cursor: pointer; transition: background 0.3s; padding:12px 14px; }
+    .primary:hover { background: #46418a; }
+    .link { text-align:center; margin-top:14px; }
+    .link a { color:#46418a; font-weight:600; text-decoration:none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="brand">Stitch Design</div>
+
+    <div class="card">
+      <div class="hero">
+        <div class="building-illustration"></div>
+      </div>
+      <div class="content">
+        <h1>Sign Up</h1>
+        <form id="signupForm">
+          <label for="name">Nama Lengkap</label>
+          <input type="text" id="name" required>
+
+          <label for="phone">Nomor HP</label>
+          <input type="tel" id="phone" required>
+
+          <label for="email">Email</label>
+          <input type="email" id="email" required>
+
+          <label for="pin">PIN</label>
+          <input type="password" id="pin" required>
+
+          <label for="nisn">NISN</label>
+          <input type="text" id="nisn" required>
+
+          <label for="kelas">Kelas</label>
+          <input type="text" id="kelas" required>
+
+          <button type="submit" class="primary">Daftar</button>
+        </form>
+        <div class="link">Sudah punya akun? <a href="index.html">Login</a></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const user = {
+        name: document.getElementById('name').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        pin: document.getElementById('pin').value.trim(),
+        nisn: document.getElementById('nisn').value.trim(),
+        kelas: document.getElementById('kelas').value.trim()
+      };
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      window.location.href = 'beranda.html';
+    });
+  </script>
+</body>
+</html>
